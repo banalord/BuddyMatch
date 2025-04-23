@@ -52,6 +52,7 @@ public interface UserService extends IService<User> {
     int userLogout(HttpServletRequest request);
 
 
+
     /**
      * 根据标签搜索用户
      * @param tagNameList
@@ -104,4 +105,12 @@ public interface UserService extends IService<User> {
      * @return
      */
     List<User> matchUsers(long num, User user);
+
+    /**
+     * 根据标签匹配用户
+     * @param num
+     * @param loginUser
+     * @return
+     */
+    List<User> matchUsers2(long num, User loginUser);
 }

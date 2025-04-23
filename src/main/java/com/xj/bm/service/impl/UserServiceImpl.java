@@ -223,8 +223,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         List<User> userList = this.list(queryWrapper);
         String tags = loginUser.getTags();
         Gson gson = new Gson();
-        List<String> tagList = gson.fromJson(tags, new TypeToken<List<String>>() {
-        }.getType());
+        List<String> tagList = gson.fromJson(tags, new TypeToken<List<String>>() {}.getType());
         // 用户列表的下标 --> 相似度
         List<Pair<User, Long>> list = new ArrayList<>();
         // 依次计算所有用户和当前用户的相似度
@@ -261,6 +260,59 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         }
         return finalUserList;
     }
+    @Override
+    public List<User> matchUsers2(long num, User loginUser) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.select("id", "tags");
+        queryWrapper.isNotNull("tags");
+        List<User> userList = this.list(queryWrapper);
+
+        String tags = loginUser.getTags();
+        Gson gson = new Gson();
+        List<String> tagList = gson.fromJson(tags, new TypeToken<List<String>>(){}.getType());
+
+        // 最大堆，保存最相似的前 num 个用户（距离小）
+        PriorityQueue<Pair<User, Long>> maxHeap = new PriorityQueue<>(
+                (a, b) -> Long.compare(b.getValue(), a.getValue()) // 距离大的排在前
+        );
+
+        for (User user : userList) {
+            String userTags = user.getTags();
+            if (StringUtils.isBlank(userTags) || user.getId() == loginUser.getId()) {
+                continue;
+            }
+            List<String> userTagList = gson.fromJson(userTags, new TypeToken<List<String>>(){}.getType());
+            long distance = AlgorithmUtils.minDistance(tagList, userTagList);
+
+            maxHeap.offer(new Pair<>(user, distance));
+            if (maxHeap.size() > num) {
+                maxHeap.poll(); // 移除距离最大的
+            }
+        }
+
+        // 把堆中用户转成有序列表（由相似到不相似）
+        List<Pair<User, Long>> resultList = new ArrayList<>(maxHeap);
+        resultList.sort(Comparator.comparingLong(Pair::getValue)); // 按距离升序排列
+
+        List<Long> userIdList = resultList.stream()
+                .map(pair -> pair.getKey().getId())
+                .collect(Collectors.toList());
+
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        userQueryWrapper.in("id", userIdList);
+
+        Map<Long, List<User>> userIdUserListMap = this.list(userQueryWrapper)
+                .stream()
+                .map(this::getSafetyUser)
+                .collect(Collectors.groupingBy(User::getId));
+
+        List<User> finalUserList = new ArrayList<>();
+        for (Long userId : userIdList) {
+            finalUserList.add(userIdUserListMap.get(userId).get(0));
+        }
+        return finalUserList;
+    }
+
     @Deprecated
     private List<User> searchUserByTagsBySql(List<String> tagNameList) {
         //从参数中拿出
