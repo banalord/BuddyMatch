@@ -190,7 +190,7 @@ public class UserController {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         User user = userService.getLoginUser(request);
-        return ResultUtils.success(userService.matchUsers(num, user));
+        return ResultUtils.success(userService.matchUsers2(num, user));
     }
 
 }
