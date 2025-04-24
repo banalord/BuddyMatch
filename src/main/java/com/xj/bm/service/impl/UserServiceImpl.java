@@ -289,7 +289,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
                 maxHeap.poll(); // 移除距离最大的
             }
         }
-
         // 把堆中用户转成有序列表（由相似到不相似）
         List<Pair<User, Long>> resultList = new ArrayList<>(maxHeap);
         resultList.sort(Comparator.comparingLong(Pair::getValue)); // 按距离升序排列
