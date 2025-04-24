@@ -19,10 +19,10 @@
 
 主要页面：
 
-![](D:\personal\技术栈整合\NewProject\伙伴匹配系统\buddymatch-backend\BuddyMatch\img\1.jpg)
+![](.\img\1.jpg)
 
-![](D:\personal\技术栈整合\NewProject\伙伴匹配系统\buddymatch-backend\BuddyMatch\img\2.jpg)
+![](.\img\2.jpg)
 
-![](D:\personal\技术栈整合\NewProject\伙伴匹配系统\buddymatch-backend\BuddyMatch\img\3.jpg)
+![](.\img\3.jpg)
 
-![](D:\personal\技术栈整合\NewProject\伙伴匹配系统\buddymatch-backend\BuddyMatch\img\4.jpg)
+![](.\img\4.jpg)
