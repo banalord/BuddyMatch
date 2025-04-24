@@ -19,10 +19,10 @@
 
 主要页面：
 
-![](img\1.jpg)
+![](https://github.com/banalord/BuddyMatch/blob/master/img/1.jpg?raw=true)
 
-![](img\2.jpg)
+![](https://github.com/banalord/BuddyMatch/blob/master/img/2.jpg?raw=true)
 
-![](img\3.jpg)
+![](https://github.com/banalord/BuddyMatch/blob/master/img/3.jpg?raw=true)
 
-![](img\4.jpg)
+![](https://github.com/banalord/BuddyMatch/blob/master/img/4.jpg?raw=true)
